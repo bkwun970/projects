@@ -59,9 +59,27 @@ class ViewController: UIViewController {
             score -= 1
         }
         
-        let ac = UIAlertController(title: title, message: "Your score is \(score)", preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: title, style: .default, handler: askQuestion))
+        if count < 10 {
+            let ac: UIAlertController
+            if title.hasPrefix("W") {
+                let str = "It's the flag of \(countries[sender.tag].uppercased()) \n Your score is \(score)"
+                ac = UIAlertController(title: title, message: str, preferredStyle: .alert)
+            } else {
+                ac = UIAlertController(title: title, message: "Your score is \(score)", preferredStyle: .alert)
+            }
+            ac.addAction(UIAlertAction(title: "continue", style: .default, handler: askQuestion))
+            present(ac, animated: true)
+        } else {
+            let finalAlert = UIAlertController(title: "Game Over!", message: "Your score is \(score)", preferredStyle: .alert)
+            finalAlert.addAction(UIAlertAction(title: "Start New Game", style: .default, handler: startNewGame))
+            present(finalAlert, animated: true)
+        }
+    }
+    
+    func startNewGame(action: UIAlertAction) {
+        score = 0;
+        count = 0;
         
-        present(ac, animated: true)
+        askQuestion(action: nil)
     }
 }
